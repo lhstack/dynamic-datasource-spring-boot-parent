@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>dynamic-datasource-spring-boot-parent</artifactId>
+        <groupId>com.lhstack.dynamic.datasource</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <packaging>pom</packaging>
+    <modules>
+        <module>dynamic-datasource-spring-boot-mybatis-example</module>
+        <module>dynamic-datasource-spring-boot-data-jpa-example</module>
+        <module>dynamic-datasource-spring-boot-mybatis-plus-example</module>
+        <module>dynamic-datasource-spring-boot-mybatis-plus-web-example</module>
+    </modules>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>dynamic-datasource-spring-boot-examples</artifactId>
+
+
+</project>

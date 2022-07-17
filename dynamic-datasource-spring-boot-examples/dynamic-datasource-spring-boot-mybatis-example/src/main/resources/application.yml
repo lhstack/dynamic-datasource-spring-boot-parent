@@ -1,0 +1,40 @@
+spring:
+  ds:
+    hikari:
+      maximum-pool-size: 10
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      idleTimeout: 300000
+      auto-commit: false
+      connection-timeout: 5000
+  dynamic:
+    primary: master
+    data-sources:
+      master:
+        type: com.zaxxer.hikari.HikariDataSource
+        maxLifetime: 600000
+        pool-name: master
+        connection-test-query: SELECT 1
+        minimumIdle: 5
+        url: jdbc:mysql://mysql.lhstack.dev:3306/test?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true
+        reference: spring.ds.hikari
+        connection-timeout: 3000
+        idle-timeout: 300000
+        username: root
+        password: 123456
+      slave:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:mysql://mysql.lhstack.dev:3306/test1?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        connection-test-query: SELECT 'X'
+        pool-name: slave
+        maxLifetime: 1800000
+        idleTimeout: 600000
+        maximum-pool-size: 3
+        minimumIdle: 1
+        username: root
+        password: 123456
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.lhstack.dynamic.datasource.entity
