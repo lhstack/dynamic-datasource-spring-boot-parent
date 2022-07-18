@@ -29,12 +29,22 @@ public class DataSourceProxy implements DataSource {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return ConnectionProxyFactory.pushOrGetConnectionProxy(() -> new ConnectionProxy(DynamicRoutingDataSourceHolder.ds(), this.datasource.getConnection()));
+        return ConnectionProxyFactory.pushOrGetConnectionProxy(() -> {
+            if (datasource instanceof DataSourceProxy) {
+                return new ConnectionProxy(DynamicRoutingDataSourceHolder.ds(), ((DataSourceProxy) datasource).datasource.getConnection());
+            }
+            return new ConnectionProxy(DynamicRoutingDataSourceHolder.ds(), datasource.getConnection());
+        });
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        return ConnectionProxyFactory.pushOrGetConnectionProxy(() -> new ConnectionProxy(DynamicRoutingDataSourceHolder.ds(), this.datasource.getConnection(username, password)));
+        return ConnectionProxyFactory.pushOrGetConnectionProxy(() -> {
+            if (datasource instanceof DataSourceProxy) {
+                return new ConnectionProxy(DynamicRoutingDataSourceHolder.ds(), ((DataSourceProxy) datasource).datasource.getConnection(username, password));
+            }
+            return new ConnectionProxy(DynamicRoutingDataSourceHolder.ds(), this.datasource.getConnection(username, password));
+        });
     }
 
     @Override
@@ -79,7 +89,7 @@ public class DataSourceProxy implements DataSource {
 
     public void close() {
         Method method = ReflectionUtils.findMethod(this.datasource.getClass(), "close");
-        if(Objects.nonNull(method)){
+        if (Objects.nonNull(method)) {
             ReflectionUtils.invokeMethod(method, this.datasource);
         }
     }
