@@ -1,6 +1,9 @@
 package com.lhstack.dynamic.datasource.mp.web.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.lhstack.dynamic.datasource.annotation.Transactional;
+import com.lhstack.dynamic.datasource.mp.web.entity.Aaa;
+import com.lhstack.dynamic.datasource.mp.web.entity.Sss;
 import com.lhstack.dynamic.datasource.mp.web.service.AaaService;
 import com.lhstack.dynamic.datasource.mp.web.service.SssService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.sql.DataSource;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +33,25 @@ public class TestController {
 
     @Autowired
     private SssService sssService;
+
+    @Autowired
+    private DataSource dataSource;
+
+
+    @GetMapping("ds")
+    public String ds(){
+        return dataSource.toString();
+    }
+
+    @GetMapping("query")
+    @Transactional(readOnly = true)
+    public String query() {
+        return this.aaaService.getOne(new LambdaQueryWrapper<Aaa>()
+                .eq(Aaa::getId, 1)).getValue()
+                +
+                this.sssService.getOne(new LambdaQueryWrapper<Sss>()
+                        .eq(Sss::getId, 1)).getValue();
+    }
 
     @GetMapping
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
