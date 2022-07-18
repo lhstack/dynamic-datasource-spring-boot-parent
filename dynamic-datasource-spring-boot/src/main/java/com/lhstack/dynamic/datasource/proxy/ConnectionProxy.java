@@ -76,6 +76,8 @@ public class ConnectionProxy implements Connection {
      */
     public void transactionCommit() throws SQLException {
         this.connection.commit();
+        //重置readOnly
+        this.connection.setReadOnly(false);
         //是否需要关闭连接，还是由连接池维护
         this.connection.close();
     }
@@ -100,9 +102,7 @@ public class ConnectionProxy implements Connection {
                 return;
             default:
                 if (this.transactional.rollbackForClassName().length + this.transactional.rollbackFor().length == 0) {
-                    this.connection.rollback();
-                    //是否需要关闭连接，还是由连接池维护
-                    this.connection.close();
+                    this.transactionRollback();
                     return;
                 }
                 //获得需要回滚的异常
@@ -118,13 +118,19 @@ public class ConnectionProxy implements Connection {
                 classNameClass.addAll(clazz);
                 //判断是否可以回滚，否则提交事务
                 if (classNameClass.stream().anyMatch(item -> item.isAssignableFrom(e.getClass()))) {
-                    this.connection.rollback();
-                    //是否需要关闭连接，还是由连接池维护
-                    this.connection.close();
+                    this.transactionRollback();
                 } else {
                     this.transactionCommit();
                 }
         }
+    }
+
+    private void transactionRollback() throws SQLException {
+        this.connection.rollback();
+        //重置readOnly
+        this.connection.setReadOnly(false);
+        //是否需要关闭连接，还是由连接池维护
+        this.connection.close();
     }
 
     @Override

@@ -103,7 +103,7 @@ public class ConnectionProxyFactory {
                         case REQUIRED:
                         case SUPPORTS:
                         case MANDATORY: {
-                            if (transactional.isolation() == lastTransactional.isolation()) {
+                            if (transactional.isolation() == lastTransactional.isolation() && transactional.readOnly() == peek.isReadOnly()) {
                                 return peek;
                             }
                         }
@@ -121,17 +121,13 @@ public class ConnectionProxyFactory {
     }
 
     private static ConnectionProxy startTransactional(Transactional transactional, ConnectionProxy connectionProxy) throws SQLException {
+        //修改连接的处理方式
+        connectionProxy.setReadOnly(transactional.readOnly());
         switch (transactional.propagation()) {
             case MANDATORY:
             case NEVER:
                 return connectionProxy;
             default:
-        }
-        //如果为只读，则设置当前事务为只读
-        if (transactional.readOnly()) {
-            try (Statement stmt = connectionProxy.createStatement()) {
-                stmt.executeUpdate("SET TRANSACTION READ ONLY");
-            }
         }
         //关闭自动提交
         connectionProxy.setAutoCommit(false);

@@ -27,4 +27,9 @@ public class AaaService extends ServiceImpl<AaaMapper, Aaa> implements IService<
     public void insert1(String master) {
         this.save(new Aaa().setValue(master));
     }
+
+    @Transactional(readOnly = true)
+    public Aaa queryById(int id) {
+        return this.baseMapper.selectById(id);
+    }
 }

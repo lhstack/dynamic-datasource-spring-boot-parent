@@ -36,4 +36,12 @@ public class Aaa {
         this.value = value;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Aaa{" +
+                "id=" + id +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

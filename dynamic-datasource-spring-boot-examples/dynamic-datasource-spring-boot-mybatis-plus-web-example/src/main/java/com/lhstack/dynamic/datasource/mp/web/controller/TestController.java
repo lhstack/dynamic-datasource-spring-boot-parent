@@ -56,9 +56,11 @@ public class TestController {
     @GetMapping
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
     public String insert(@RequestParam(value = "msg", defaultValue = "") String msg) throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(20);
-        CountDownLatch countDownLatch = new CountDownLatch(20);
-        for (int i = 0; i < 20; i++) {
+        Aaa aaa = aaaService.queryById(2003);
+        System.out.println(aaa);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        CountDownLatch countDownLatch = new CountDownLatch(10);
+        for (int i = 0; i < 10; i++) {
             executorService.submit(() -> {
                 for (int j = 0; j < 100; j++) {
                     aaaService.insert1("aaaServiceInsert1: " + msg);
@@ -66,8 +68,8 @@ public class TestController {
                 countDownLatch.countDown();
             });
         }
-
         countDownLatch.await();
+        aaaService.insert("aaaServiceInsert: " + msg);
         aaaService.insert("aaaServiceInsert: " + msg);
         aaaService.insert1("aaaServiceInsert1: " + msg);
         sssService.insert("sssServiceInsert1: " + msg);

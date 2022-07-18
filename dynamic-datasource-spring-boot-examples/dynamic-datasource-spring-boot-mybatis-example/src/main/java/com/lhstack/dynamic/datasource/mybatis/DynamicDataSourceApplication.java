@@ -39,16 +39,16 @@ public class DynamicDataSourceApplication implements ApplicationRunner, CommandL
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        try{
-            testService.rollback();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        try{
-            testService.rollbackExpectArithmeticException();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try{
+//            testService.rollback();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        try{
+//            testService.rollbackExpectArithmeticException();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -56,13 +56,12 @@ public class DynamicDataSourceApplication implements ApplicationRunner, CommandL
     public void run(String... args) throws Exception {
         Connection connection = dataSource.getConnection();
         connection.setAutoCommit(false);
-        try(Statement statement = connection.createStatement()){
-            statement.executeUpdate("SET TRANSACTION READ ONLY");
-        }
+        connection.setReadOnly(true);
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM sss");
         ResultSet resultSet = preparedStatement.executeQuery();
         System.out.println(resultSet);
         connection.commit();
+        connection.setReadOnly(false);
         PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO sss(`value`) VALUES('测试数据')");
         System.out.println(preparedStatement1.executeUpdate());
         connection.commit();
