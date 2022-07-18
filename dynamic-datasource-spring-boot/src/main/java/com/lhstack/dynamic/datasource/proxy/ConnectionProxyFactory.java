@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Isolation;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,6 +26,7 @@ public class ConnectionProxyFactory {
 
     /**
      * 回滚
+     *
      * @param e
      * @throws SQLException
      */
@@ -44,6 +44,7 @@ public class ConnectionProxyFactory {
 
     /**
      * 提交事务
+     *
      * @throws SQLException
      */
     public static void commit() throws SQLException {
@@ -64,6 +65,7 @@ public class ConnectionProxyFactory {
 
     /**
      * 新增或者根据事务传播机制重用连接
+     *
      * @param sqlExceptionSupplier
      * @return
      * @throws SQLException
@@ -103,8 +105,12 @@ public class ConnectionProxyFactory {
                         case REQUIRED:
                         case SUPPORTS:
                         case MANDATORY: {
-                            if (transactional.isolation() == lastTransactional.isolation() && transactional.readOnly() == peek.isReadOnly()) {
-                                return peek;
+                            //判断是否是同一个事务隔离机制
+                            if (transactional.isolation() == lastTransactional.isolation()) {
+                                //判断事务和当前连接读取模式是否一致，或者当前连接为非只读模式，非只读模式也包含只读，要么当前事务都是只读模式，要么连接为非只读模式
+                                if (!peek.isReadOnly() || transactional.readOnly() == peek.isReadOnly()) {
+                                    return peek;
+                                }
                             }
                         }
                         default:

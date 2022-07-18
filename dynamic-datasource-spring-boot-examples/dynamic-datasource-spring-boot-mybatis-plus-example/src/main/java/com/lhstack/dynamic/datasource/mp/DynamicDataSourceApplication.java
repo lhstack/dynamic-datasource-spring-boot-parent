@@ -39,26 +39,26 @@ public class DynamicDataSourceApplication implements ApplicationRunner, CommandL
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        try {
-            testService.rollback();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            testService.rollback();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         try {
             testService.rollbackService();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            testService.rollbackServiceExpectArithmeticException();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            testService.rollbackExpectArithmeticException();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            testService.rollbackServiceExpectArithmeticException();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            testService.rollbackExpectArithmeticException();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

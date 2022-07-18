@@ -1,5 +1,6 @@
 package com.lhstack.dynamic.datasource.mp.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lhstack.dynamic.datasource.annotation.Transactional;
@@ -22,6 +23,12 @@ public class AaaService extends ServiceImpl<AaaMapper, Aaa> implements IService<
 
     public void insert(String value) {
         this.save(new Aaa().setValue(value));
+    }
+
+
+    @Transactional(readOnly = true)
+    public String queryOne() {
+        return this.getOne(new QueryWrapper<Aaa>().last("LIMIT 1")).toString();
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.NEVER)

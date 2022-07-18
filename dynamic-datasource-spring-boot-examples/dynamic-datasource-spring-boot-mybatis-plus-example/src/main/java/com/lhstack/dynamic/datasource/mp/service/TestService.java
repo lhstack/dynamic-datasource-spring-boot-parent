@@ -31,6 +31,7 @@ public class TestService {
     @Transactional(rollbackFor = Exception.class)
     public void rollbackService(){
         this.aaaService.insert("rollback-master-service");
+        System.out.println(this.aaaService.queryOne());
         this.aaaService.insert1("rollback-master1-service");
         this.sssService.insert("rollback-slave-service");
         throw new RuntimeException("err");
