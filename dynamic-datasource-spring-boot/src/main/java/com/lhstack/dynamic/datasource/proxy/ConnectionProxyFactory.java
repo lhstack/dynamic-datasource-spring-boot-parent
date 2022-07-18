@@ -103,8 +103,12 @@ public class ConnectionProxyFactory {
                         case REQUIRED:
                         case SUPPORTS:
                         case MANDATORY: {
-                            if (transactional.isolation() == lastTransactional.isolation() && transactional.readOnly() == peek.isReadOnly()) {
-                                return peek;
+                            //判断是否是同一个事务隔离机制
+                            if (transactional.isolation() == lastTransactional.isolation()) {
+                                //判断事务和当前连接读取模式是否一致，或者当前连接为非只读模式，非只读模式也包含只读，要么当前事务都是只读模式，要么连接为非只读模式
+                                if (!peek.isReadOnly() || transactional.readOnly() == peek.isReadOnly()) {
+                                    return peek;
+                                }
                             }
                         }
                         default:

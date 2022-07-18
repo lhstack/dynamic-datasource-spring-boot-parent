@@ -41,7 +41,7 @@ spring:
         username: root
         password: 123456
 ```
-## 动态数据源
+## 切换数据源
 `在类或者方法上面加上DS指定需要使用的数据源即可`
 ```java
 @DS("slave")
