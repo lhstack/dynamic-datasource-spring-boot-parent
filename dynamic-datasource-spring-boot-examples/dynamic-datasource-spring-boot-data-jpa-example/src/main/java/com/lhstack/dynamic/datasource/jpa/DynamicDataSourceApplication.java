@@ -1,5 +1,7 @@
 package com.lhstack.dynamic.datasource.jpa;
 
+import com.lhstack.dynamic.datasource.jpa.entity.Sss;
+import com.lhstack.dynamic.datasource.jpa.repository.SssRepository;
 import com.lhstack.dynamic.datasource.jpa.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -7,6 +9,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.List;
 
 /**
  * @Description TODO
@@ -21,6 +25,9 @@ public class DynamicDataSourceApplication implements ApplicationRunner {
 
     @Autowired
     private TestService testService;
+
+    @Autowired
+    private SssRepository sssRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(DynamicDataSourceApplication.class, args);
@@ -38,6 +45,8 @@ public class DynamicDataSourceApplication implements ApplicationRunner {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        List<Sss> ssses = sssRepository.queryAllBy();
+        System.out.println(ssses);
     }
 
 }

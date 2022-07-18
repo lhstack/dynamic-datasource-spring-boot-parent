@@ -1,5 +1,6 @@
 package com.lhstack.dynamic.datasource.jpa.service;
 
+import com.lhstack.dynamic.datasource.annotation.DS;
 import com.lhstack.dynamic.datasource.jpa.entity.Sss;
 import com.lhstack.dynamic.datasource.jpa.repository.SssRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @Modify By
  */
 @Service
+@DS("slave")
 public class SssService {
 
     @Autowired
