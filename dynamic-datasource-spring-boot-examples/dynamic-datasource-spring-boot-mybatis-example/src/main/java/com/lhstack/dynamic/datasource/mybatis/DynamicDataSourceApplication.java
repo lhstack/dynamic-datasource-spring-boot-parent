@@ -1,6 +1,7 @@
 package com.lhstack.dynamic.datasource.mybatis;
 
 import com.lhstack.dynamic.datasource.annotation.DS;
+import com.lhstack.dynamic.datasource.mybatis.mapper.SssMapper;
 import com.lhstack.dynamic.datasource.mybatis.service.TestService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,22 +34,27 @@ public class DynamicDataSourceApplication implements ApplicationRunner, CommandL
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private SssMapper sssMapper;
+
     public static void main(String[] args) {
         SpringApplication.run(DynamicDataSourceApplication.class, args);
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        try{
-//            testService.rollback();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        try{
-//            testService.rollbackExpectArithmeticException();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        try{
+            testService.rollback();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try{
+            testService.rollbackExpectArithmeticException();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        String s = sssMapper.queryOne();
+        System.out.println(s);
     }
 
     @Override
