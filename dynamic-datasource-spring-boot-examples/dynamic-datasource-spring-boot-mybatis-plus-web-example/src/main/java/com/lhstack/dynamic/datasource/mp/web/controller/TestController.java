@@ -47,10 +47,10 @@ public class TestController {
     @Transactional(readOnly = true)
     public String query() {
         return this.aaaService.getOne(new LambdaQueryWrapper<Aaa>()
-                .eq(Aaa::getId, 1)).getValue()
+                .eq(Aaa::getId, 6471)).getValue()
                 +
                 this.sssService.getOne(new LambdaQueryWrapper<Sss>()
-                        .eq(Sss::getId, 1)).getValue();
+                        .eq(Sss::getId, 20)).getValue();
     }
 
     @GetMapping
