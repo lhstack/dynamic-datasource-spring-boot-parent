@@ -22,15 +22,19 @@ spring:
         username: root
         password: 123456
       slave:
-        type: com.zaxxer.hikari.HikariDataSource
+        type: com.alibaba.druid.pool.DruidDataSource
         url: jdbc:mysql://localhost:3306/test1?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true
         driver-class-name: com.mysql.cj.jdbc.Driver
-        connection-test-query: SELECT 'X'
-        pool-name: slave
-        maxLifetime: 1800000
-        idleTimeout: 600000
-        maximum-pool-size: 3
-        minimumIdle: 1
+        name: druid-ds
+        maxOpenPreparedStatements: 10
+        initialSize: 1
+        maxActive: 5
+        minIdle: 1
+        maxWait: 30000
+        validationQuery: SELECT 'X'
+        testOnBorrow: true
+        testOnReturn: true
+        testWhileIdle: true
         username: root
         password: 123456
 mybatis-plus:

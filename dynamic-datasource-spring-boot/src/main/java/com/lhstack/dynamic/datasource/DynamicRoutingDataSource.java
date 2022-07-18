@@ -24,6 +24,11 @@ public class DynamicRoutingDataSource extends AbstractDataSource {
     private final Map<String, DataSourceProxy> targetDataSources;
     private DataSourceProxy defaultTargetDataSource;
 
+    /**
+     * 如果没有匹配到对应数据源，则返回默认的
+     */
+    private boolean noMatchReturnDefault = false;
+
     public DynamicRoutingDataSource(String primary, DataSource dataSource) {
         this(primary, dataSource, false);
     }
@@ -62,6 +67,10 @@ public class DynamicRoutingDataSource extends AbstractDataSource {
         this.defaultTargetDataSource = dataSourceProxyMap.get(primary);
         this.targetDataSources = ds;
         this.primary = primary;
+    }
+
+    public void setNoMatchReturnDefault(boolean noMatchReturnDefault) {
+        this.noMatchReturnDefault = noMatchReturnDefault;
     }
 
     /**
@@ -164,13 +173,16 @@ public class DynamicRoutingDataSource extends AbstractDataSource {
      *
      * @return
      */
-    protected DataSource determineTargetDataSource() {
+    public DataSource determineTargetDataSource() {
         String lookupKey = this.determineCurrentLookupKey();
         if (Objects.isNull(lookupKey)) {
             return this.defaultTargetDataSource;
         }
         DataSource dataSource = this.targetDataSources.get(lookupKey);
         if (dataSource == null) {
+            if(noMatchReturnDefault){
+                return this.defaultTargetDataSource;
+            }
             throw new IllegalStateException("Cannot determine target DataSource for lookup key [" + lookupKey + "]");
         }
         return dataSource;

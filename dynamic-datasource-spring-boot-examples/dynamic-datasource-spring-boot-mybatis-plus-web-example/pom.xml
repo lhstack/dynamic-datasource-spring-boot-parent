@@ -10,11 +10,18 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <mybatis.plus.version>3.5.1</mybatis.plus.version>
+        <druid.version>1.2.9</druid.version>
     </properties>
 
     <artifactId>dynamic-datasource-spring-boot-mybatis-plus-web-example</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

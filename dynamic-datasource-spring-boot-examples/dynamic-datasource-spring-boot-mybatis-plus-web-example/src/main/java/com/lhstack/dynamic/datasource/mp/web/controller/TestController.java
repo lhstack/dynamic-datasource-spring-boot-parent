@@ -1,6 +1,8 @@
 package com.lhstack.dynamic.datasource.mp.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.lhstack.dynamic.datasource.DynamicRoutingDataSource;
+import com.lhstack.dynamic.datasource.DynamicRoutingDataSourceHolder;
 import com.lhstack.dynamic.datasource.annotation.Transactional;
 import com.lhstack.dynamic.datasource.mp.web.entity.Aaa;
 import com.lhstack.dynamic.datasource.mp.web.entity.Sss;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,12 +37,21 @@ public class TestController {
     private SssService sssService;
 
     @Autowired
-    private DataSource dataSource;
+    private DynamicRoutingDataSource dataSource;
 
 
     @GetMapping("ds")
-    public String ds(){
-        return dataSource.toString();
+    public String ds(@RequestParam(name = "ds", defaultValue = "") String ds) throws SQLException {
+        try {
+            DynamicRoutingDataSourceHolder.ds(ds);
+            dataSource.setNoMatchReturnDefault(true);
+            return dataSource.determineTargetDataSource().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return dataSource.getDefaultTargetDataSource().toString();
+        } finally {
+            DynamicRoutingDataSourceHolder.reset();
+        }
     }
 
     @GetMapping("query")
