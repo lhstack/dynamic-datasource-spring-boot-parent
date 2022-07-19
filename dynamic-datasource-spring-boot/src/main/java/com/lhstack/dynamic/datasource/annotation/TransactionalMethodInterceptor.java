@@ -44,7 +44,7 @@ public class TransactionalMethodInterceptor implements MethodInterceptor {
         String firstStackCacheKey = FIRST_STACK_CACHE_KEY.get();
         if (Objects.isNull(firstStackCacheKey)) {
             firstStackCacheKey = CacheUtils.generateUniqueCacheKey(invocation);
-            FIRST_STACK_CACHE_KEY.set(CacheUtils.generateUniqueCacheKey(invocation));
+            FIRST_STACK_CACHE_KEY.set(firstStackCacheKey);
         }
         try {
             Transactional transactional = cache.computeIfAbsent(CacheUtils.generateUniqueCacheKey(invocation), method -> Optional
@@ -56,13 +56,15 @@ public class TransactionalMethodInterceptor implements MethodInterceptor {
             flag = true;
             ConnectionProxyFactory.rollback(e);
             DynamicRoutingTransactionalHolder.reset();
+            FIRST_STACK_CACHE_KEY.remove();
             throw e;
         } finally {
+            DynamicRoutingTransactionalHolder.popTransactional();
             if (!flag) {
-                DynamicRoutingTransactionalHolder.popTransactional();
                 if (firstStackCacheKey.equals(CacheUtils.generateUniqueCacheKey(invocation))) {
                     ConnectionProxyFactory.commit();
                     DynamicRoutingTransactionalHolder.reset();
+                    FIRST_STACK_CACHE_KEY.remove();
                 }
             }
         }
