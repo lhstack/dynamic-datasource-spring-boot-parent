@@ -1,5 +1,5 @@
 # 如果在使用过程中有什么需求或者问题，欢迎提issue
-`目前支持jpa,mybatis,mybatis-plus以及其他,相关demo请查看dynamic-datasource-spring-boot-examples`
+`目前支持mybatis,mybatis-plus以及jdbc,原生等,相关demo请查看dynamic-datasource-spring-boot-examples`
 ## 配置，支持配置引用以及定制配置
 - `配置引用，相当于通用配置，通过ref指定通用配置的前缀`
 - `定制配置，只属于对应数据源的配置，优先级比ref高，可覆盖ref引用的配置`

@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>dynamic-datasource-spring-boot-mybatis-example</module>
-        <module>dynamic-datasource-spring-boot-data-jpa-example</module>
         <module>dynamic-datasource-spring-boot-mybatis-plus-example</module>
         <module>dynamic-datasource-spring-boot-mybatis-plus-web-example</module>
     </modules>
