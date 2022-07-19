@@ -159,6 +159,11 @@ public class DynamicRoutingDataSource extends AbstractDataSource {
         values.forEach(DataSourceProxy::close);
     }
 
+    public void init() {
+        Collection<DataSourceProxy> values = this.targetDataSources.values();
+        values.forEach(DataSourceProxy::init);
+    }
+
     public <T> T unwrap(Class<T> iface) throws SQLException {
         return determineTargetDataSource().unwrap(iface);
     }
@@ -197,4 +202,5 @@ public class DynamicRoutingDataSource extends AbstractDataSource {
     public Connection getConnection(String username, String password) throws SQLException {
         return this.determineTargetDataSource().getConnection(username, password);
     }
+
 }

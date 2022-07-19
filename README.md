@@ -1,8 +1,8 @@
 # 如果在使用过程中有什么需求或者问题，欢迎提issue
 `目前支持jpa,mybatis,mybatis-plus以及其他,相关demo请查看dynamic-datasource-spring-boot-examples`
 ## 配置，支持配置引用以及定制配置
-- `配置引用，相当于通用配置，通过reference指定通用配置的前缀`
-- `定制配置，只属于对应数据源的配置，优先级比refrence高，可覆盖reference引用的配置`
+- `配置引用，相当于通用配置，通过ref指定通用配置的前缀`
+- `定制配置，只属于对应数据源的配置，优先级比ref高，可覆盖ref引用的配置`
 - `配置参数无自动提示，需要使用者针对对应的数据库连接池中的set方法做相应设置`
 ```yaml
 spring:
@@ -23,7 +23,7 @@ spring:
         connection-test-query: SELECT 1
         minimumIdle: 5
         url: jdbc:mysql://mysql.lhstack.dev:3306/test?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true
-        reference: spring.ds.hikari
+        ref: spring.ds.hikari
         connection-timeout: 3000
         idle-timeout: 300000
         username: root

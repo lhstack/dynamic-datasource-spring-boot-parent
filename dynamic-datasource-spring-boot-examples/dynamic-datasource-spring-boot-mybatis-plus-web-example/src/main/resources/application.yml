@@ -16,7 +16,7 @@ spring:
         connection-test-query: SELECT 1
         minimumIdle: 5
         url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true
-        reference: spring.ds.hikari
+        ref: spring.ds.hikari
         connection-timeout: 3000
         idle-timeout: 300000
         username: root

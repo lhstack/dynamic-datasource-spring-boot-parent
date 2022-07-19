@@ -47,7 +47,7 @@ public class DynamicRoutingDataSourceConfiguration {
         return new AnnotationPointcutAdvisor(Transactional.class, new TransactionalMethodInterceptor(), 100);
     }
 
-    @Bean(destroyMethod = "close")
+    @Bean(destroyMethod = "close",initMethod = "init")
     @ConditionalOnMissingBean
     public DynamicRoutingDataSource dataSource(Environment environment) {
         Map<String, DynamicRoutingDataSourceProperties.DsProps> ds = properties.getDataSources();
@@ -56,8 +56,8 @@ public class DynamicRoutingDataSourceConfiguration {
             throw new RuntimeException("Set the primary data source");
         }
         ds.forEach((k, v) -> {
-            if (StringUtils.hasText(v.getReference())) {
-                dataSources.put(k, DataSourceUtils.bindOrCreate(k, v.getReference(), v.getType(), environment));
+            if (StringUtils.hasText(v.getRef())) {
+                dataSources.put(k, DataSourceUtils.bindOrCreate(k, v.getRef(), v.getType(), environment));
             } else {
                 dataSources.put(k, DataSourceUtils.bindOrCreate(k, "spring.dynamic.data-sources.".concat(k), v.getType(), environment));
             }

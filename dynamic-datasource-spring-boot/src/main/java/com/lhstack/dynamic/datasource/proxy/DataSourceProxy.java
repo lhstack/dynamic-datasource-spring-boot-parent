@@ -93,4 +93,11 @@ public class DataSourceProxy implements DataSource {
             ReflectionUtils.invokeMethod(method, this.datasource);
         }
     }
+
+    public void init() {
+        Method method = ReflectionUtils.findMethod(this.datasource.getClass(), "init");
+        if (Objects.nonNull(method)) {
+            ReflectionUtils.invokeMethod(method, this.datasource);
+        }
+    }
 }

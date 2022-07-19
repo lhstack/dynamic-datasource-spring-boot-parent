@@ -32,7 +32,7 @@ public class DynamicRoutingDataSourceProperties {
         /**
          * 引用共用配置，如spring.ds.hikari,spring.ds.druid
          */
-        private String reference;
+        private String ref;
 
         public String getUsername() {
             return username;
@@ -79,12 +79,12 @@ public class DynamicRoutingDataSourceProperties {
             return this;
         }
 
-        public String getReference() {
-            return reference;
+        public String getRef() {
+            return ref;
         }
 
-        public DsProps setReference(String reference) {
-            this.reference = reference;
+        public DsProps setRef(String ref) {
+            this.ref = ref;
             return this;
         }
     }
