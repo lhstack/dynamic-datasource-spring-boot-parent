@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
@@ -40,12 +39,12 @@ public class DynamicRoutingDataSourceConfiguration {
 
     @Bean
     public AnnotationPointcutAdvisor dsAnnotationPointcutAdvisor() {
-        return new AnnotationPointcutAdvisor(DS.class, new DsMethodInterceptor(), Ordered.HIGHEST_PRECEDENCE);
+        return new AnnotationPointcutAdvisor(DS.class, new DsMethodInterceptor(), 10);
     }
 
     @Bean
     public AnnotationPointcutAdvisor transactionalAnnotationPointcutAdvisor() {
-        return new AnnotationPointcutAdvisor(Transactional.class, new TransactionalMethodInterceptor(), Ordered.HIGHEST_PRECEDENCE + 1);
+        return new AnnotationPointcutAdvisor(Transactional.class, new TransactionalMethodInterceptor(), 100);
     }
 
     @Bean(destroyMethod = "close")
