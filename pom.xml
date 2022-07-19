@@ -7,7 +7,7 @@
     <groupId>com.lhstack.dynamic.datasource</groupId>
     <artifactId>dynamic-datasource-spring-boot-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>2.0.0</version>
     <modules>
         <module>dynamic-datasource-spring-boot</module>
         <module>dynamic-datasource-spring-boot-starter</module>
@@ -19,6 +19,19 @@
         <maven.compiler.target>8</maven.compiler.target>
         <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
     </properties>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>public-dev</id>
+            <url>http://nexus.lhstack.com/repository/dev-snapshots/</url>
+            <name>snapshot</name>
+        </snapshotRepository>
+        <repository>
+            <id>public-dev</id>
+            <url>http://nexus.lhstack.com/repository/dev-releases/</url>
+            <name>release</name>
+        </repository>
+    </distributionManagement>
 
 
     <dependencyManagement>
