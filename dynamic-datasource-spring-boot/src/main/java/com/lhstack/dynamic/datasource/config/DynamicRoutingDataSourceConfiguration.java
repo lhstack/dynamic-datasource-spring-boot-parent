@@ -40,12 +40,12 @@ public class DynamicRoutingDataSourceConfiguration {
 
     @Bean
     public AnnotationPointcutAdvisor dsAnnotationPointcutAdvisor() {
-        return new AnnotationPointcutAdvisor(DS.class, new DsMethodInterceptor(), Ordered.HIGHEST_PRECEDENCE);
+        return new AnnotationPointcutAdvisor(DS.class, new DsMethodInterceptor(), 10);
     }
 
     @Bean
     public AnnotationPointcutAdvisor transactionalAnnotationPointcutAdvisor() {
-        return new AnnotationPointcutAdvisor(Transactional.class, new TransactionalMethodInterceptor(), Ordered.HIGHEST_PRECEDENCE + 1);
+        return new AnnotationPointcutAdvisor(Transactional.class, new TransactionalMethodInterceptor(), 100);
     }
 
     @Bean(destroyMethod = "close")
