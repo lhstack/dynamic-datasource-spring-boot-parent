@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
@@ -57,8 +56,8 @@ public class DynamicRoutingDataSourceConfiguration {
             throw new RuntimeException("Set the primary data source");
         }
         ds.forEach((k, v) -> {
-            if (StringUtils.hasText(v.getReference())) {
-                dataSources.put(k, new DataSourceProxy(DataSourceUtils.bindOrCreate(k, v.getReference(), v.getType(), environment)));
+            if (StringUtils.hasText(v.getRef())) {
+                dataSources.put(k, new DataSourceProxy(DataSourceUtils.bindOrCreate(k, v.getRef(), v.getType(), environment)));
             } else {
                 dataSources.put(k, new DataSourceProxy(DataSourceUtils.bindOrCreate(k, "spring.dynamic.data-sources.".concat(k), v.getType(), environment)));
             }
